@@ -663,6 +663,7 @@ stats.profile = function(values, f) {
       max = null,
       M2 = 0,
       vals = [],
+      t = type(values, f),
       u = {}, delta, sd, i, v, x;
 
   // compute summary stats
@@ -676,7 +677,7 @@ stats.profile = function(values, f) {
       ++missing;
     } else if (util.isValid(v)) {
       // update stats
-      x = (typeof v === 'string') ? v.length : v;
+      x = (t === 'date') ? (new Date(v)).getTime() : (typeof v === 'string') ? v.length : v;
       if (min===null || x < min) min = x;
       if (max===null || x > max) max = x;
       delta = x - mean;
@@ -692,7 +693,7 @@ stats.profile = function(values, f) {
   vals.sort(util.cmp);
 
   return {
-    type:     type(values, f),
+    type:     t,
     unique:   u,
     count:    values.length,
     valid:    valid,
